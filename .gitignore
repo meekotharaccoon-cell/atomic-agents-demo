@@ -16,5 +16,9 @@ env/
 # Data and logs (keep out of repo)
 data/
 
+# Allow keeping specific data placeholders tracked
+!data/mycelium/growth_logs/.gitkeep
+!data/products/.gitkeep
+
 # Byte-compiled / cache
 *.pyc
