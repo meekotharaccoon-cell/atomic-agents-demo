@@ -16,3 +16,9 @@
 {"timestamp": "2026-02-16T12:22:50.572984", "event": "hypha_spawned", "hypha_id": "crypto_1", "amount": 10, "network_capital_after": 90.0, "metadata": {}}
 {"timestamp": "2026-02-16T12:22:50.572984", "event": "profit_distribution", "hypha_id": "crypto_1", "amount": 100, "network_capital_after": 140.0, "metadata": {"compounded": 50.0, "your_take": 40.0, "spore_bank_addition": 10.0}}
 {"timestamp": "2026-02-16T12:22:50.574953", "event": "hypha_spawned", "hypha_id": "stock_1", "amount": 10, "network_capital_after": 90.0, "metadata": {}}
+{"timestamp": "2026-02-16T12:25:43.278847", "event": "hypha_spawned", "hypha_id": "crypto_1", "amount": 10, "network_capital_after": 90.0, "metadata": {}}
+{"timestamp": "2026-02-16T12:25:43.278847", "event": "profit_distribution", "hypha_id": "crypto_1", "amount": 100, "network_capital_after": 140.0, "metadata": {"compounded": 50.0, "your_take": 40.0, "spore_bank_addition": 10.0}}
+{"timestamp": "2026-02-16T12:25:43.281003", "event": "hypha_spawned", "hypha_id": "stock_1", "amount": 10, "network_capital_after": 90.0, "metadata": {}}
+{"timestamp": "2026-02-16T12:53:27.261433", "event": "hypha_spawned", "hypha_id": "crypto_1", "amount": 10, "network_capital_after": 90.0, "metadata": {}}
+{"timestamp": "2026-02-16T12:53:27.262480", "event": "profit_distribution", "hypha_id": "crypto_1", "amount": 100, "network_capital_after": 140.0, "metadata": {"compounded": 50.0, "your_take": 40.0, "spore_bank_addition": 10.0}}
+{"timestamp": "2026-02-16T12:53:27.264514", "event": "hypha_spawned", "hypha_id": "stock_1", "amount": 10, "network_capital_after": 90.0, "metadata": {}}
