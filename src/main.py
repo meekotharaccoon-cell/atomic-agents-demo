@@ -50,9 +50,12 @@ class GumroadManual:
         }
         
         template = templates["notion"]
-        if any(word in trend.lower() for word in ["budget", "money", "finance", "save"]):
+        budget_keywords = ["budget", "money", "finance", "save"]
+        business_keywords = ["business", "client", "freelance", "agency"]
+
+        if any(word in trend.lower() for word in budget_keywords):
             template = templates["budget"]
-        elif any(word in trend.lower() for word in ["business", "client", "freelance", "agency"]):
+        elif any(word in trend.lower() for word in business_keywords):
             template = templates["business"]
         
         return {
@@ -107,7 +110,8 @@ async def main():
             print(f"{'='*60}")
             
             os.makedirs("../data/products", exist_ok=True)
-            filename = f"../data/products/{trend.replace(' ', '_')}_{datetime.now().strftime('%Y%m%d_%H%M')}.txt"
+            date_part = datetime.now().strftime('%Y%m%d_%H%M')
+            filename = f"../data/products/{trend.replace(' ', '_')}_{date_part}.txt"
             with open(filename, "w", encoding="utf-8") as f:
                 f.write(f"PRODUCT: {g['name']}\n")
                 f.write(f"PRICE: ${g['price']}\n")
@@ -116,7 +120,11 @@ async def main():
             print(f"\nSaved to: {filename}")
         
         elif cmd == 'multi':
-            trends = ["notion budget template", "freelance client tracker", "content calendar system"]
+            trends = [
+                "notion budget template",
+                "freelance client tracker",
+                "content calendar system",
+            ]
             for trend in trends:
                 g = gumroad.generate_product(trend)
                 print(f"\n{'='*60}")
@@ -133,8 +141,8 @@ async def main():
                     f.write(f"URL: {g['url']}\n\n")
                     f.write(f"DESCRIPTION:\n{g['description']}\n")
             
-            print(f"\n{'='*60}")
-            print(f"3 PRODUCTS GENERATED!")
+            print("\n" + ('=' * 60))
+            print("3 PRODUCTS GENERATED!")
             print("Check data/products/ folder")
             print("Copy each to Gumroad and publish!")
             print(f"{'='*60}")

@@ -1,7 +1,6 @@
-﻿import os
-import asyncio
+﻿import asyncio
 import json
-from typing import Dict, List, Any
+from typing import Dict, List
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -19,9 +18,14 @@ class FinancialSuperAgent:
     """
     
     def __init__(self):
+        prompt = (
+            "You are a financial analysis AI. Provide market insights "
+            "and explain trading decisions."
+        )
+
         self.chat_agent = AIChatbot(
             agent_id="financial_assistant",
-            system_prompt="You are a financial analysis AI. Provide market insights and explain trading decisions."
+            system_prompt=prompt,
         )
         
         self.data_engine = FreeDataEngine()
@@ -104,7 +108,11 @@ class FinancialSuperAgent:
         is_paper = self.risk_manager.profile.paper_trading
         
         mode = "PAPER" if is_paper else "LIVE"
-        print(f"   💸 Executing {mode} trade: {signal.action} ${size:.2f} of {signal.symbol}")
+        msg = (
+            f"   💸 Executing {mode} trade: {signal.action}"
+            f" ${size:.2f} of {signal.symbol}"
+        )
+        print(msg)
         
         # Simulate execution
         trade_record = {
@@ -198,10 +206,12 @@ class FinancialSuperAgent:
             "return_pct": ((self._calculate_portfolio_value() / 100000) - 1) * 100
         }
         
-        with open(f"data/performance/report_{datetime.now().strftime('%Y%m%d')}.json", "w") as f:
+        date_str = datetime.now().strftime("%Y%m%d")
+        filename = f"data/performance/report_{date_str}.json"
+        with open(filename, "w", encoding="utf-8") as f:
             json.dump(report, f, indent=2)
-        
-        print(f"\n📈 Daily Report:")
+
+        print("\n📈 Daily Report:")
         print(f"   Trades: {report['trades']}")
         print(f"   Return: {report['return_pct']:+.2f}%")
-        print(f"   Report saved to data/performance/")
+        print("   Report saved to data/performance/")

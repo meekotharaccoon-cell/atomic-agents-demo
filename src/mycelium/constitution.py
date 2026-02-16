@@ -41,25 +41,28 @@ class RootSystem:
         """
         # Check 1: Capital allocation limit
         if capital > (self.network_capital * self.limits.MAX_SINGLE_HYPHA_CAPITAL_PERCENT / 100):
-            return {
-                "approved": False,
-                "reason": f"Capital ${capital} exceeds 10% of network (${self.network_capital})"
-            }
+            reason = (
+                f"Capital ${capital} exceeds allowed allocation for the network"
+                f" (network ${self.network_capital})"
+            )
+            return {"approved": False, "reason": reason}
         
         # Check 2: Max hyphae without approval
         if self.total_hyphae >= self.limits.MAX_HYPHAE_WITHOUT_APPROVAL:
+            reason = f"Network has {self.total_hyphae} hyphae. Kimi approval required for more."
             return {
                 "approved": False,
-                "reason": f"Network has {self.total_hyphae} hyphae. Kimi approval required for more.",
-                "action_required": "Request expansion approval from architect"
+                "reason": reason,
+                "action_required": "Request expansion approval from architect",
             }
         
         # Check 3: Minimum profit to spawn
         if self.network_capital < 150 and self.total_hyphae >= 3:  # $150 = $100 + $50 profit
-            return {
-                "approved": False,
-                "reason": f"Need ${self.limits.MIN_PROFIT_TO_SPAWN_NEW_HYPHA} profit to spawn. Current: ${self.network_capital - 100}"
-            }
+            reason = (
+                f"Need ${self.limits.MIN_PROFIT_TO_SPAWN_NEW_HYPHA} profit to spawn. "
+                f"Current: ${self.network_capital - 100}"
+            )
+            return {"approved": False, "reason": reason}
         
         # APPROVED
         self.hyphae_registry[hypha_id] = {
@@ -144,6 +147,11 @@ class RootSystem:
         return {"status": "loss_recorded", "consecutive_failures": self.consecutive_failures}
     
     def get_network_status(self) -> Dict:
+        profit_split = (
+            f"{self.limits.PROFIT_COMPOUND_PERCENT}/"
+            f"{self.limits.PROFIT_DISTRIBUTION_PERCENT}"
+        )
+
         return {
             "network_capital": self.network_capital,
             "spore_bank": self.spor_bank,
@@ -155,8 +163,8 @@ class RootSystem:
                 "max_daily_loss": self.limits.MAX_DAILY_NETWORK_LOSS_PERCENT,
                 "max_hypha_size": self.limits.MAX_SINGLE_HYPHA_CAPITAL_PERCENT,
                 "spore_reserve": self.limits.SPORE_BANK_RESERVE_PERCENT,
-                "profit_split": f"{self.limits.PROFIT_COMPOUND_PERCENT}/{self.limits.PROFIT_DISTRIBUTION_PERCENT}"
-            }
+                "profit_split": profit_split,
+            },
         }
     
     def _log_growth_event(self, event_type: str, hypha_id: str, amount: float, metadata: Dict = None):

@@ -1,5 +1,4 @@
 ﻿import os
-import asyncio
 from typing import Dict, List, Optional
 from dataclasses import dataclass
 import aiohttp
@@ -30,17 +29,24 @@ class CerebrasClient:
         self.session: Optional[aiohttp.ClientSession] = None
     
     async def __aenter__(self):
-        self.session = aiohttp.ClientSession(
-            headers={"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"},
-            timeout=aiohttp.ClientTimeout(total=60)
-        )
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+        }
+
+        timeout = aiohttp.ClientTimeout(total=60)
+
+        self.session = aiohttp.ClientSession(headers=headers, timeout=timeout)
         return self
     
     async def __aexit__(self, *args):
         if self.session:
             await self.session.close()
     
-    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=4, max=10),
+    )
     async def complete(self, messages: List[Message]) -> CompletionResponse:
         if not self.session:
             raise RuntimeError("Client not initialized")
@@ -52,7 +58,8 @@ class CerebrasClient:
             "temperature": self.temperature,
         }
         
-        async with self.session.post(f"{self.base_url}/chat/completions", json=payload) as response:
+        url = f"{self.base_url}/chat/completions"
+        async with self.session.post(url, json=payload) as response:
             response.raise_for_status()
             data = await response.json()
             

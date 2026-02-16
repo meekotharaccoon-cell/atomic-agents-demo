@@ -1,5 +1,4 @@
-﻿import asyncio
-from typing import Dict, List, Any, Optional
+﻿from typing import Dict, List, Optional
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
@@ -35,7 +34,12 @@ class StrategyEngine:
         }
         self.price_history: Dict[str, List[float]] = {}
     
-    async def analyze(self, symbol: str, current_price: float, market_data: Dict) -> List[Signal]:
+    async def analyze(
+        self,
+        symbol: str,
+        current_price: float,
+        market_data: Dict,
+    ) -> List[Signal]:
         """
         Run all strategies on an asset, return signals.
         """
@@ -57,7 +61,12 @@ class StrategyEngine:
         
         return signals
     
-    async def _mean_reversion(self, symbol: str, price: float, data: Dict) -> Optional[Signal]:
+    async def _mean_reversion(
+        self,
+        symbol: str,
+        price: float,
+        data: Dict,
+    ) -> Optional[Signal]:
         """
         Buy when price below average, sell when above.
         """
@@ -94,7 +103,12 @@ class StrategyEngine:
         
         return None
     
-    async def _momentum(self, symbol: str, price: float, data: Dict) -> Optional[Signal]:
+    async def _momentum(
+        self,
+        symbol: str,
+        price: float,
+        data: Dict,
+    ) -> Optional[Signal]:
         """
         Buy when price going up, sell when going down.
         """
@@ -129,7 +143,12 @@ class StrategyEngine:
         
         return None
     
-    async def _trend_following(self, symbol: str, price: float, data: Dict) -> Optional[Signal]:
+    async def _trend_following(
+        self,
+        symbol: str,
+        price: float,
+        data: Dict,
+    ) -> Optional[Signal]:
         """
         Follow established trends.
         """
