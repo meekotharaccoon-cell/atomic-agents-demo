@@ -163,6 +163,7 @@ class RootSystem:
         """Immutable growth history."""
         from datetime import datetime
         import json
+        import os
         
         log_entry = {
             "timestamp": datetime.now().isoformat(),
@@ -173,5 +174,9 @@ class RootSystem:
             "metadata": metadata or {}
         }
         
-        with open(f"data/mycelium/growth_logs/{datetime.now().strftime('%Y%m')}.jsonl", "a") as f:
+        # Ensure the growth_logs directory exists before writing (CI may start without it)
+        log_dir = os.path.join("data", "mycelium", "growth_logs")
+        os.makedirs(log_dir, exist_ok=True)
+        log_path = os.path.join(log_dir, f"{datetime.now().strftime('%Y%m')}.jsonl")
+        with open(log_path, "a", encoding="utf-8") as f:
             f.write(json.dumps(log_entry) + "\n")
